@@ -49,9 +49,56 @@ const Header = ({
         </Link>
 
         {/* Mobile Menu Button - Only visible on small screens */}
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu className="h-5 w-5" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[200px]">
+            <DropdownMenuItem>
+              <Link to="/" className="w-full">
+                Home
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/categories" className="w-full">
+                Categories
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/experts" className="w-full">
+                Experts
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/subscription" className="w-full">
+                Subscription Plans
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/donation" className="w-full">
+                Donation
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/services" className="w-full">
+                Services
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link to="/login" className="w-full">
+                Login
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/register" className="w-full">
+                Register
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         {/* Navigation - Hidden on mobile */}
         <nav className="hidden md:flex items-center space-x-6">
@@ -157,9 +204,25 @@ const Header = ({
                   Register
                 </Button>
               </Link>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <User className="h-5 w-5" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="md:hidden">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[200px]">
+                  <DropdownMenuItem>
+                    <Link to="/login" className="w-full">
+                      Login
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/register" className="w-full">
+                      Register
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
         </div>

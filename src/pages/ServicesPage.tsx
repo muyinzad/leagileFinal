@@ -116,8 +116,8 @@ const ServicesPage = () => {
                 solution? We offer custom research packages tailored to your
                 specific needs.
               </p>
-              <Button size="lg" onClick={() => navigate("/experts")}>
-                Consult with an Expert
+              <Button size="lg" onClick={() => navigate("/checkout")}>
+                Request Custom Solution
               </Button>
             </div>
 

@@ -154,9 +154,9 @@ const DataAnalysis = () => {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => navigate("/experts")}
+                onClick={() => navigate("/checkout")}
               >
-                Consult with an Expert
+                Request Analysis Service
               </Button>
             </div>
           </div>
@@ -211,7 +211,7 @@ const DataAnalysis = () => {
                 <Button
                   variant="outline"
                   className="flex items-center"
-                  onClick={() => navigate("/data-research")}
+                  onClick={() => navigate("/services")}
                 >
                   Learn about our research services
                   <ArrowRight className="ml-2 h-4 w-4" />

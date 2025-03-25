@@ -210,24 +210,22 @@ const DataCollection = () => {
 
           <div className="bg-slate-50 p-8 rounded-lg mb-12">
             <h2 className="text-2xl font-bold mb-4">
-              Request Data Collection Services
+              List Your Data Requirements
             </h2>
             <p className="mb-6">
-              Need specific data for your research project? Our team can help
-              you collect high-quality, relevant data tailored to your
-              requirements.
+              Please provide your specific data requirements to help us create a
+              tailored dataset for your research project.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" onClick={() => navigate("/checkout")}>
-                Request Data Collection
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => navigate("/experts")}
-              >
-                Consult with an Expert
-              </Button>
+            <div className="space-y-4">
+              <textarea
+                className="w-full h-32 p-3 border rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Describe your data requirements, including data points needed, target population, timeline, and any specific formats required..."
+              />
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" onClick={() => navigate("/checkout")}>
+                  Submit Requirements
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -305,43 +303,12 @@ const DataCollection = () => {
                   <Button
                     variant="outline"
                     className="flex items-center"
-                    onClick={() => navigate("/data-research")}
+                    onClick={() => navigate("/services")}
                   >
                     Explore our research methodology
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-md mb-12">
-            <CardHeader>
-              <CardTitle>Industries We Serve</CardTitle>
-              <CardDescription>
-                Specialized data collection across various sectors
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {[
-                  "Academic Research",
-                  "Healthcare & Medical",
-                  "Market Research",
-                  "Social Sciences",
-                  "Environmental Studies",
-                  "Public Policy",
-                  "Business Intelligence",
-                  "Technology & Innovation",
-                  "Education",
-                ].map((industry, index) => (
-                  <div
-                    key={index}
-                    className="bg-slate-50 p-3 rounded text-center"
-                  >
-                    {industry}
-                  </div>
-                ))}
               </div>
             </CardContent>
           </Card>
