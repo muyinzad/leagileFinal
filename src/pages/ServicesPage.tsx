@@ -107,20 +107,6 @@ const ServicesPage = () => {
               </Card>
             </div>
 
-            <div className="bg-slate-50 p-8 rounded-lg mb-16">
-              <h2 className="text-2xl font-bold mb-4">
-                Custom Research Solutions
-              </h2>
-              <p className="mb-6">
-                Need a combination of services or a specialized research
-                solution? We offer custom research packages tailored to your
-                specific needs.
-              </p>
-              <Button size="lg" onClick={() => navigate("/checkout")}>
-                Request Custom Solution
-              </Button>
-            </div>
-
             <div className="space-y-8">
               <h2 className="text-2xl font-bold">
                 Why Choose Our Research Services?

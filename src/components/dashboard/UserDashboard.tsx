@@ -58,6 +58,8 @@ import {
   CheckCircle,
   AlertCircle,
   Info,
+  Database,
+  ClipboardList,
 } from "lucide-react";
 
 interface UserDashboardProps {
@@ -150,17 +152,8 @@ const UserDashboard = ({
     },
   ],
 }: UserDashboardProps) => {
-  // State for expert application form
-  const [expertiseArea, setExpertiseArea] = useState("market-research");
-  const [experienceYears, setExperienceYears] = useState("5-10");
-  const [availabilityOptions, setAvailabilityOptions] = useState({
-    weekdays: true,
-    weekends: false,
-    mornings: true,
-    evenings: true,
-  });
-  const [expertiseLevel, setExpertiseLevel] = useState("advanced");
-  const [consultationFormat, setConsultationFormat] = useState("both");
+  // State for service request form
+  const [serviceType, setServiceType] = useState("data-collection");
 
   // State for active tab
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -245,10 +238,10 @@ const UserDashboard = ({
                 <Button
                   variant="outline"
                   className="gap-1"
-                  onClick={() => setActiveTab("become-expert")}
+                  onClick={() => setActiveTab("services")}
                 >
-                  <Award className="h-4 w-4" />
-                  Become an Expert
+                  <Database className="h-4 w-4" />
+                  Request Services
                 </Button>
                 {subscriptionType === "None" ? (
                   <Button className="gap-1">
@@ -300,6 +293,10 @@ const UserDashboard = ({
               >
                 <Star className="h-4 w-4" />
                 <span className="hidden md:inline">For You</span>
+              </TabsTrigger>
+              <TabsTrigger value="services" className="flex items-center gap-2">
+                <Database className="h-4 w-4" />
+                <span className="hidden md:inline">Services</span>
               </TabsTrigger>
             </TabsList>
             <div className="hidden md:flex items-center gap-2">
@@ -830,19 +827,19 @@ const UserDashboard = ({
             </Card>
           </TabsContent>
 
-          {/* Become Expert Tab */}
-          <TabsContent value="become-expert" className="space-y-4">
+          {/* Services Tab */}
+          <TabsContent value="services" className="space-y-4">
             <Card className="bg-gradient-to-br from-background to-muted">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 rounded-full bg-primary/10">
-                    <Award className="h-6 w-6 text-primary" />
+                    <Database className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle>Become a Research Expert</CardTitle>
+                  <CardTitle>Research Services</CardTitle>
                 </div>
                 <CardDescription className="text-base">
-                  Share your expertise and earn by providing valuable insights
-                  and consultations to our research community.
+                  Request data collection and analysis services tailored to your
+                  research needs.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -853,43 +850,31 @@ const UserDashboard = ({
                         <div className="space-y-4">
                           <div>
                             <Label
-                              htmlFor="expertise"
+                              htmlFor="service-type"
                               className="text-sm font-medium flex items-center gap-2"
                             >
-                              <Briefcase className="h-4 w-4 text-muted-foreground" />
-                              Area of Expertise
+                              <Database className="h-4 w-4 text-muted-foreground" />
+                              Service Type
                             </Label>
                             <Select
-                              defaultValue={expertiseArea}
-                              onValueChange={setExpertiseArea}
+                              defaultValue={serviceType}
+                              onValueChange={setServiceType}
                             >
-                              <SelectTrigger id="expertise" className="mt-1.5">
-                                <SelectValue placeholder="Select your expertise" />
+                              <SelectTrigger
+                                id="service-type"
+                                className="mt-1.5"
+                              >
+                                <SelectValue placeholder="Select service type" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="market-research">
-                                  Market Research
+                                <SelectItem value="data-collection">
+                                  Data Collection
                                 </SelectItem>
-                                <SelectItem value="finance">
-                                  Finance & Economics
+                                <SelectItem value="data-analysis">
+                                  Data Analysis
                                 </SelectItem>
-                                <SelectItem value="technology">
-                                  Technology & Innovation
-                                </SelectItem>
-                                <SelectItem value="healthcare">
-                                  Healthcare & Life Sciences
-                                </SelectItem>
-                                <SelectItem value="education">
-                                  Education & Academia
-                                </SelectItem>
-                                <SelectItem value="sustainability">
-                                  Sustainability & ESG
-                                </SelectItem>
-                                <SelectItem value="consumer-behavior">
-                                  Consumer Behavior
-                                </SelectItem>
-                                <SelectItem value="other">
-                                  Other Specialty
+                                <SelectItem value="both">
+                                  Both Collection & Analysis
                                 </SelectItem>
                               </SelectContent>
                             </Select>
@@ -897,244 +882,172 @@ const UserDashboard = ({
 
                           <div>
                             <Label
-                              htmlFor="experience"
+                              htmlFor="timeline"
                               className="text-sm font-medium flex items-center gap-2"
                             >
                               <Clock3 className="h-4 w-4 text-muted-foreground" />
-                              Years of Experience
+                              Project Timeline
                             </Label>
-                            <Select
-                              defaultValue={experienceYears}
-                              onValueChange={setExperienceYears}
-                            >
-                              <SelectTrigger id="experience" className="mt-1.5">
-                                <SelectValue placeholder="Select experience" />
+                            <Select defaultValue="standard">
+                              <SelectTrigger id="timeline" className="mt-1.5">
+                                <SelectValue placeholder="Select timeline" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="1-3">1-3 years</SelectItem>
-                                <SelectItem value="3-5">3-5 years</SelectItem>
-                                <SelectItem value="5-10">5-10 years</SelectItem>
-                                <SelectItem value="10+">10+ years</SelectItem>
+                                <SelectItem value="urgent">
+                                  Urgent (1-2 weeks)
+                                </SelectItem>
+                                <SelectItem value="standard">
+                                  Standard (3-4 weeks)
+                                </SelectItem>
+                                <SelectItem value="extended">
+                                  Extended (5+ weeks)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
 
                           <div>
                             <Label
-                              htmlFor="rate"
+                              htmlFor="budget"
                               className="text-sm font-medium flex items-center gap-2"
                             >
                               <DollarSign className="h-4 w-4 text-muted-foreground" />
-                              Hourly Consultation Rate ($)
+                              Budget Range ($)
                             </Label>
-                            <Input
-                              id="rate"
-                              type="number"
-                              placeholder="100"
-                              min="50"
-                              className="mt-1.5"
-                            />
+                            <Select defaultValue="medium">
+                              <SelectTrigger id="budget" className="mt-1.5">
+                                <SelectValue placeholder="Select budget range" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="low">
+                                  $500 - $1,000
+                                </SelectItem>
+                                <SelectItem value="medium">
+                                  $1,000 - $5,000
+                                </SelectItem>
+                                <SelectItem value="high">
+                                  $5,000 - $10,000
+                                </SelectItem>
+                                <SelectItem value="enterprise">
+                                  $10,000+
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
 
                         <div className="space-y-4">
-                          <div>
-                            <Label className="text-sm font-medium flex items-center gap-2">
-                              <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                              Expertise Level
-                            </Label>
-                            <RadioGroup
-                              defaultValue={expertiseLevel}
-                              onValueChange={setExpertiseLevel}
-                              className="mt-2 grid grid-cols-1 gap-2"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem
-                                  value="intermediate"
-                                  id="intermediate"
-                                />
-                                <Label
-                                  htmlFor="intermediate"
-                                  className="cursor-pointer"
-                                >
-                                  Intermediate
-                                </Label>
+                          {serviceType === "data-collection" ||
+                          serviceType === "both" ? (
+                            <div>
+                              <Label className="text-sm font-medium flex items-center gap-2">
+                                <ClipboardList className="h-4 w-4 text-muted-foreground" />
+                                Data Collection Methods
+                              </Label>
+                              <div className="mt-2 grid grid-cols-1 gap-2">
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="surveys" defaultChecked />
+                                  <Label
+                                    htmlFor="surveys"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Surveys & Questionnaires
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="interviews" />
+                                  <Label
+                                    htmlFor="interviews"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Interviews & Focus Groups
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="field-data" />
+                                  <Label
+                                    htmlFor="field-data"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Field Data Collection
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="database" />
+                                  <Label
+                                    htmlFor="database"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Database Mining
+                                  </Label>
+                                </div>
                               </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem
-                                  value="advanced"
-                                  id="advanced"
-                                />
-                                <Label
-                                  htmlFor="advanced"
-                                  className="cursor-pointer"
-                                >
-                                  Advanced
-                                </Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="expert" id="expert" />
-                                <Label
-                                  htmlFor="expert"
-                                  className="cursor-pointer"
-                                >
-                                  Expert/Thought Leader
-                                </Label>
-                              </div>
-                            </RadioGroup>
-                          </div>
+                            </div>
+                          ) : null}
 
-                          <div>
-                            <Label className="text-sm font-medium flex items-center gap-2">
-                              <Users className="h-4 w-4 text-muted-foreground" />
-                              Consultation Format
-                            </Label>
-                            <RadioGroup
-                              defaultValue={consultationFormat}
-                              onValueChange={setConsultationFormat}
-                              className="mt-2 grid grid-cols-1 gap-2"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="written" id="written" />
-                                <Label
-                                  htmlFor="written"
-                                  className="cursor-pointer"
-                                >
-                                  Written Consultations Only
-                                </Label>
+                          {serviceType === "data-analysis" ||
+                          serviceType === "both" ? (
+                            <div>
+                              <Label className="text-sm font-medium flex items-center gap-2">
+                                <BarChart className="h-4 w-4 text-muted-foreground" />
+                                Analysis Types
+                              </Label>
+                              <div className="mt-2 grid grid-cols-1 gap-2">
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="statistical" defaultChecked />
+                                  <Label
+                                    htmlFor="statistical"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Statistical Analysis
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="visualization" defaultChecked />
+                                  <Label
+                                    htmlFor="visualization"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Data Visualization
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="predictive" />
+                                  <Label
+                                    htmlFor="predictive"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Predictive Modeling
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <Checkbox id="machine-learning" />
+                                  <Label
+                                    htmlFor="machine-learning"
+                                    className="text-sm cursor-pointer"
+                                  >
+                                    Machine Learning
+                                  </Label>
+                                </div>
                               </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="video" id="video" />
-                                <Label
-                                  htmlFor="video"
-                                  className="cursor-pointer"
-                                >
-                                  Video Calls Only
-                                </Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="both" id="both" />
-                                <Label
-                                  htmlFor="both"
-                                  className="cursor-pointer"
-                                >
-                                  Both Formats
-                                </Label>
-                              </div>
-                            </RadioGroup>
-                          </div>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
 
                       <div className="space-y-2">
                         <Label
-                          htmlFor="bio"
+                          htmlFor="requirements"
                           className="text-sm font-medium flex items-center gap-2"
                         >
                           <FileText className="h-4 w-4 text-muted-foreground" />
-                          Professional Bio
+                          Project Requirements
                         </Label>
                         <textarea
-                          id="bio"
+                          id="requirements"
                           className="w-full min-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                          placeholder="Tell us about your professional background, research focus, and what makes your expertise valuable to our users..."
+                          placeholder="Describe your research objectives, target population, specific data points needed, and any other relevant requirements..."
                         />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label
-                          htmlFor="credentials"
-                          className="text-sm font-medium flex items-center gap-2"
-                        >
-                          <Award className="h-4 w-4 text-muted-foreground" />
-                          Credentials & Certifications
-                        </Label>
-                        <textarea
-                          id="credentials"
-                          className="w-full min-h-[80px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                          placeholder="List your relevant credentials, certifications, academic qualifications, and published research..."
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          Availability
-                        </Label>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="weekdays"
-                              checked={availabilityOptions.weekdays}
-                              onCheckedChange={(checked) =>
-                                setAvailabilityOptions({
-                                  ...availabilityOptions,
-                                  weekdays: !!checked,
-                                })
-                              }
-                            />
-                            <Label
-                              htmlFor="weekdays"
-                              className="text-sm cursor-pointer"
-                            >
-                              Weekdays
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="weekends"
-                              checked={availabilityOptions.weekends}
-                              onCheckedChange={(checked) =>
-                                setAvailabilityOptions({
-                                  ...availabilityOptions,
-                                  weekends: !!checked,
-                                })
-                              }
-                            />
-                            <Label
-                              htmlFor="weekends"
-                              className="text-sm cursor-pointer"
-                            >
-                              Weekends
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="mornings"
-                              checked={availabilityOptions.mornings}
-                              onCheckedChange={(checked) =>
-                                setAvailabilityOptions({
-                                  ...availabilityOptions,
-                                  mornings: !!checked,
-                                })
-                              }
-                            />
-                            <Label
-                              htmlFor="mornings"
-                              className="text-sm cursor-pointer"
-                            >
-                              Mornings
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="evenings"
-                              checked={availabilityOptions.evenings}
-                              onCheckedChange={(checked) =>
-                                setAvailabilityOptions({
-                                  ...availabilityOptions,
-                                  evenings: !!checked,
-                                })
-                              }
-                            />
-                            <Label
-                              htmlFor="evenings"
-                              className="text-sm cursor-pointer"
-                            >
-                              Evenings
-                            </Label>
-                          </div>
-                        </div>
                       </div>
 
                       <div className="pt-2">
@@ -1145,7 +1058,7 @@ const UserDashboard = ({
                         <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
                           <div className="border-2 border-dashed border-muted-foreground/20 rounded-md p-4 text-center hover:bg-muted/50 transition-colors cursor-pointer">
                             <Upload className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
-                            <p className="text-sm font-medium">Resume/CV</p>
+                            <p className="text-sm font-medium">Project Brief</p>
                             <p className="text-xs text-muted-foreground">
                               PDF, DOC up to 5MB
                             </p>
@@ -1153,10 +1066,10 @@ const UserDashboard = ({
                           <div className="border-2 border-dashed border-muted-foreground/20 rounded-md p-4 text-center hover:bg-muted/50 transition-colors cursor-pointer">
                             <Upload className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
                             <p className="text-sm font-medium">
-                              Sample Research
+                              Existing Data (if any)
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              PDF up to 10MB
+                              CSV, XLSX up to 10MB
                             </p>
                           </div>
                         </div>
@@ -1167,56 +1080,75 @@ const UserDashboard = ({
                   <div className="col-span-1">
                     <div className="bg-card rounded-lg border shadow-sm p-6 h-full">
                       <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                        <Star className="h-5 w-5 text-amber-500" />
-                        Benefits of Being an Expert
+                        <Info className="h-5 w-5 text-blue-500" />
+                        Service Information
                       </h3>
-                      <ul className="space-y-3">
-                        <li className="flex gap-2">
-                          <DollarSign className="h-5 w-5 text-green-500 shrink-0" />
-                          <span className="text-sm">
-                            Earn competitive rates for your expertise and
-                            consultations
-                          </span>
-                        </li>
-                        <li className="flex gap-2">
-                          <Users className="h-5 w-5 text-blue-500 shrink-0" />
-                          <span className="text-sm">
-                            Connect with a global network of researchers and
-                            professionals
-                          </span>
-                        </li>
-                        <li className="flex gap-2">
-                          <Award className="h-5 w-5 text-purple-500 shrink-0" />
-                          <span className="text-sm">
-                            Build your professional reputation and authority
-                          </span>
-                        </li>
-                        <li className="flex gap-2">
-                          <Calendar className="h-5 w-5 text-orange-500 shrink-0" />
-                          <span className="text-sm">
-                            Flexible schedule - you choose when to offer
-                            consultations
-                          </span>
-                        </li>
-                        <li className="flex gap-2">
-                          <FileText className="h-5 w-5 text-teal-500 shrink-0" />
-                          <span className="text-sm">
-                            Opportunity to publish your research to a wider
-                            audience
-                          </span>
-                        </li>
-                      </ul>
 
-                      <div className="mt-6 pt-6 border-t">
-                        <h4 className="font-medium text-sm mb-2">
-                          Expert Verification Process
-                        </h4>
-                        <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
-                          <li>Submit your application</li>
-                          <li>Credential verification (1-2 days)</li>
-                          <li>Brief video interview</li>
-                          <li>Profile approval and onboarding</li>
-                        </ol>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium text-sm mb-2">
+                            Data Collection
+                          </h4>
+                          <ul className="space-y-2 text-sm">
+                            <li className="flex gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                              <span>
+                                Custom-designed surveys and questionnaires
+                              </span>
+                            </li>
+                            <li className="flex gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                              <span>
+                                Professional interview and focus group
+                                facilitation
+                              </span>
+                            </li>
+                            <li className="flex gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                              <span>
+                                Rigorous data validation and quality control
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium text-sm mb-2">
+                            Data Analysis
+                          </h4>
+                          <ul className="space-y-2 text-sm">
+                            <li className="flex gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                              <span>
+                                Advanced statistical analysis techniques
+                              </span>
+                            </li>
+                            <li className="flex gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                              <span>
+                                Interactive data visualizations and dashboards
+                              </span>
+                            </li>
+                            <li className="flex gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                              <span>
+                                Comprehensive insights and recommendations
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="pt-4 border-t">
+                          <h4 className="font-medium text-sm mb-2">
+                            Process Timeline
+                          </h4>
+                          <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
+                            <li>Initial consultation (1-2 days)</li>
+                            <li>Project scoping and proposal (3-5 days)</li>
+                            <li>Data collection/analysis execution</li>
+                            <li>Results delivery and review</li>
+                          </ol>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1224,7 +1156,7 @@ const UserDashboard = ({
               </CardContent>
               <CardFooter className="flex flex-col sm:flex-row gap-3">
                 <Button className="w-full sm:w-auto" size="lg">
-                  <Award className="mr-2 h-4 w-4" /> Submit Application
+                  <Database className="mr-2 h-4 w-4" /> Submit Request
                 </Button>
                 <Button
                   variant="outline"
