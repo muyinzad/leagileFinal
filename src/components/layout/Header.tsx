@@ -41,13 +41,11 @@ const Header = ({
       <div className="container flex h-20 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold">R</span>
-          </div>
-          <div className="hidden md:flex flex-col">
-            <span className="font-bold text-xl">{logoText}</span>
-            <span className="text-xs text-muted-foreground">{slogan}</span>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Research Center Logo"
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Mobile Menu Button - Only visible on small screens */}

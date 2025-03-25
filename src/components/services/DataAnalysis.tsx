@@ -120,9 +120,37 @@ const DataAnalysis = () => {
               research data.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" onClick={() => navigate("/checkout")}>
-                Request Analysis Service
-              </Button>
+              <div className="flex-1">
+                <label
+                  htmlFor="file-upload"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Upload your data files for analysis
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="file-upload"
+                    type="file"
+                    className="block w-full text-sm text-gray-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-md file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-primary file:text-white
+                      hover:file:bg-primary/90"
+                    multiple
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => alert("Files uploaded successfully!")}
+                  >
+                    Upload
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Supported formats: CSV, XLSX, JSON, TXT (Max 50MB)
+                </p>
+              </div>
               <Button
                 variant="outline"
                 size="lg"

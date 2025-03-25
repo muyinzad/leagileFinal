@@ -19,9 +19,16 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">
-              Leagile Data Research Center
-            </h3>
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src="/logo.png"
+                alt="Research Center Logo"
+                className="h-10 w-auto bg-white rounded p-1"
+              />
+              <h3 className="text-xl font-bold">
+                Leagile Data Research Center
+              </h3>
+            </div>
             <p className="text-slate-300 mb-4">
               Your trusted platform for expert research and consultation
               services.

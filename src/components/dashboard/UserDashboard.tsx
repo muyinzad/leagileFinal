@@ -188,16 +188,6 @@ const UserDashboard = ({
       value: wishlistedReports.length,
       icon: <Heart className="h-5 w-5 text-rose-500" />,
     },
-    {
-      label: "Upcoming Consultations",
-      value: upcomingConsultations.length,
-      icon: <Calendar className="h-5 w-5 text-emerald-500" />,
-    },
-    {
-      label: "Recently Viewed",
-      value: recentlyViewedReports.length,
-      icon: <Clock className="h-5 w-5 text-amber-500" />,
-    },
   ];
 
   return (
@@ -300,13 +290,6 @@ const UserDashboard = ({
                 <Heart className="h-4 w-4" />
                 <span className="hidden md:inline">Wishlist</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="consultations"
-                className="flex items-center gap-2"
-              >
-                <Calendar className="h-4 w-4" />
-                <span className="hidden md:inline">Consultations</span>
-              </TabsTrigger>
               <TabsTrigger value="history" className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
                 <span className="hidden md:inline">History</span>
@@ -349,122 +332,45 @@ const UserDashboard = ({
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Recent Activity */}
-              <Card className="lg:col-span-2">
+            <div className="grid grid-cols-1 gap-6">
+              {/* Previously Downloaded Reports */}
+              <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-xl flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-muted-foreground" />
-                    Recent Activity
+                    <Download className="h-5 w-5 text-muted-foreground" />
+                    Previously Downloaded Reports
                   </CardTitle>
                   <CardDescription>
-                    Your latest interactions with research reports
+                    Your recently downloaded research reports
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {[
-                      ...recentlyViewedReports,
-                      ...downloadedReports.slice(0, 1),
-                    ]
-                      .sort((a, b) => {
-                        const dateA = new Date(a.viewedDate || a.downloadDate);
-                        const dateB = new Date(b.viewedDate || b.downloadDate);
-                        return dateB.getTime() - dateA.getTime();
-                      })
-                      .slice(0, 4)
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex items-start gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-                        >
-                          <div className="bg-primary/10 p-2 rounded-full">
-                            {"viewedDate" in item ? (
-                              <Clock className="h-5 w-5 text-blue-500" />
-                            ) : (
-                              <Download className="h-5 w-5 text-green-500" />
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium">{item.title}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {"viewedDate" in item
-                                ? `Viewed on ${new Date(item.viewedDate).toLocaleDateString()}`
-                                : `Downloaded on ${new Date(item.downloadDate).toLocaleDateString()}`}
-                            </p>
-                          </div>
-                          <Button variant="ghost" size="sm">
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
+                    {downloadedReports.slice(0, 4).map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <Download className="h-5 w-5 text-green-500" />
                         </div>
-                      ))}
+                        <div className="flex-1">
+                          <p className="font-medium">{item.title}</p>
+                          <p className="text-sm text-muted-foreground">
+                            Downloaded on{" "}
+                            {new Date(item.downloadDate).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Button variant="ghost" size="sm">
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
                 <CardFooter>
                   <Button variant="outline" size="sm" className="w-full">
-                    View All Activity
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              {/* Upcoming Consultations */}
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
-                    Upcoming Consultations
-                  </CardTitle>
-                  <CardDescription>
-                    Your scheduled expert sessions
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {upcomingConsultations.length > 0 ? (
-                    <div className="space-y-4">
-                      {upcomingConsultations.map((consultation, index) => (
-                        <div
-                          key={index}
-                          className="p-3 rounded-lg border bg-card hover:shadow-sm transition-shadow"
-                        >
-                          <div className="flex justify-between items-start mb-2">
-                            <p className="font-medium">
-                              {consultation.expertName}
-                            </p>
-                            <Badge variant="outline">
-                              {consultation.topic}
-                            </Badge>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
-                            <span>
-                              {new Date(consultation.date).toLocaleDateString()}{" "}
-                              at {consultation.time}
-                            </span>
-                          </div>
-                          <div className="mt-3 flex gap-2">
-                            <Button size="sm" className="w-full">
-                              <MessageSquare className="h-4 w-4 mr-1" /> Join
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center py-6 text-center">
-                      <Calendar className="h-10 w-10 text-muted-foreground mb-2" />
-                      <h3 className="font-medium mb-1">No Upcoming Sessions</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Schedule a consultation with an expert
-                      </p>
-                      <Button size="sm">
-                        <PlusCircle className="h-4 w-4 mr-1" /> Book Session
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full">
-                    View All Consultations
+                    View All Downloads
                   </Button>
                 </CardFooter>
               </Card>
@@ -695,105 +601,6 @@ const UserDashboard = ({
             </Card>
           </TabsContent>
 
-          {/* Consultations Tab */}
-          <TabsContent value="consultations" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5" />
-                      Upcoming Consultations
-                    </CardTitle>
-                    <CardDescription>
-                      Your scheduled expert consultation sessions
-                    </CardDescription>
-                  </div>
-                  <Button>
-                    <PlusCircle className="h-4 w-4 mr-2" /> Book New
-                    Consultation
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {upcomingConsultations.length > 0 ? (
-                  <div className="rounded-md border overflow-hidden">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Expert</TableHead>
-                          <TableHead>Topic</TableHead>
-                          <TableHead>Date & Time</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {upcomingConsultations.map((consultation) => (
-                          <TableRow key={consultation.id}>
-                            <TableCell className="font-medium">
-                              {consultation.expertName}
-                            </TableCell>
-                            <TableCell>{consultation.topic}</TableCell>
-                            <TableCell>
-                              {new Date(consultation.date).toLocaleDateString()}{" "}
-                              at {consultation.time}
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex justify-end gap-2">
-                                <Button variant="outline" size="sm">
-                                  <Calendar className="h-4 w-4 mr-1" /> Add to
-                                  Calendar
-                                </Button>
-                                <Button size="sm">
-                                  <MessageSquare className="h-4 w-4 mr-1" />{" "}
-                                  Join
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <Calendar className="h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-medium mb-2">
-                      No Upcoming Consultations
-                    </h3>
-                    <p className="text-muted-foreground mb-4 max-w-md">
-                      You don't have any scheduled consultations with experts.
-                      Book a session to get personalized insights.
-                    </p>
-                    <Button>
-                      <PlusCircle className="h-4 w-4 mr-2" /> Book a
-                      Consultation
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Past Consultations */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Past Consultations</CardTitle>
-                <CardDescription>
-                  Review your previous expert sessions
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Clock className="h-10 w-10 text-muted-foreground mb-2" />
-                  <h3 className="font-medium mb-1">No Past Consultations</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Your completed consultations will appear here
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
           {/* History Tab */}
           <TabsContent value="history" className="space-y-4">
             <Card>
@@ -801,18 +608,18 @@ const UserDashboard = ({
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                   <div>
                     <CardTitle className="flex items-center gap-2">
-                      <Clock className="h-5 w-5" />
-                      Recently Viewed
+                      <Download className="h-5 w-5" />
+                      Download History
                     </CardTitle>
                     <CardDescription>
-                      Reports you've recently viewed or accessed
+                      Reports you've previously downloaded
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="relative">
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="Search history..."
+                        placeholder="Search downloads..."
                         className="pl-9 w-[200px]"
                       />
                     </div>
@@ -828,22 +635,22 @@ const UserDashboard = ({
                     <TableHeader>
                       <TableRow>
                         <TableHead>Report Title</TableHead>
-                        <TableHead>Viewed On</TableHead>
+                        <TableHead>Downloaded On</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {recentlyViewedReports.map((report) => (
+                      {downloadedReports.map((report) => (
                         <TableRow key={report.id}>
                           <TableCell className="font-medium">
                             {report.title}
                           </TableCell>
                           <TableCell>
-                            {new Date(report.viewedDate).toLocaleDateString()}
+                            {new Date(report.downloadDate).toLocaleDateString()}
                           </TableCell>
                           <TableCell className="text-right">
                             <Button variant="ghost" size="sm">
-                              View Again
+                              Download Again
                             </Button>
                           </TableCell>
                         </TableRow>
