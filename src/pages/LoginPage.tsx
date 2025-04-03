@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -11,18 +11,30 @@ import {
 import { Button } from "@/components/ui/button";
 import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
-import MainLayout from "@/components/layout/MainLayout";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginPage = () => {
-  const handleLogin = (values: any) => {
-    console.log("Login submitted", values);
-    // In a real app, this would call an authentication API
-  };
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
 
-  const handleRegister = (values: any) => {
-    console.log("Register submitted", values);
-    // In a real app, this would call a registration API
-  };
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    if (user && !isLoading) {
+      navigate("/dashboard");
+    }
+  }, [user, isLoading, navigate]);
+
+  // If still loading, show loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
@@ -41,7 +53,7 @@ const LoginPage = () => {
                 <TabsTrigger value="register">Register</TabsTrigger>
               </TabsList>
               <TabsContent value="login">
-                <LoginForm onSubmit={handleLogin} />
+                <LoginForm />
                 <div className="mt-6">
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -54,14 +66,14 @@ const LoginPage = () => {
                     </div>
                   </div>
                   <div className="flex mt-6">
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full" disabled>
                       Google
                     </Button>
                   </div>
                 </div>
               </TabsContent>
               <TabsContent value="register">
-                <RegisterForm onSubmit={handleRegister} />
+                <RegisterForm />
               </TabsContent>
             </Tabs>
           </CardContent>

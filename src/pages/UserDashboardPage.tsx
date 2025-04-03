@@ -1,20 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import UserDashboard from "@/components/dashboard/UserDashboard";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 const UserDashboardPage = () => {
-  // Mock user data - in a real app, this would come from authentication context or API
-  const userData = {
-    userName: "John Doe",
-    subscriptionType: "Premium" as const,
-    subscriptionEndDate: "2023-12-31",
-    // Other user data would be populated here
-  };
+  const { user } = useAuth();
+  const [userData, setUserData] = useState({
+    userName: "",
+    subscriptionType: "Free" as const,
+    subscriptionEndDate: new Date(
+      Date.now() + 30 * 24 * 60 * 60 * 1000,
+    ).toISOString(),
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
   // Get cart state from context
   const { cartItems = [] } = useCart() || {};
   const cartItemCount = cartItems?.length || 0;
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching user profile:", error);
+          return;
+        }
+
+        if (data) {
+          setUserData({
+            userName: data.name || user.user_metadata?.name || "User",
+            subscriptionType: (data.subscription_type || "Free") as
+              | "Premium"
+              | "Free"
+              | "None",
+            subscriptionEndDate:
+              data.subscription_end_date ||
+              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          });
+        }
+      } catch (error) {
+        console.error("Error in fetchUserProfile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <MainLayout isLoggedIn={true} cartItemCount={cartItemCount}>
+        <div className="flex items-center justify-center h-[80vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout isLoggedIn={true} cartItemCount={cartItemCount}>

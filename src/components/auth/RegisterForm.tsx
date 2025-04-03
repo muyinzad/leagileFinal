@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/context/AuthContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z
   .object({
@@ -34,11 +38,19 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 interface RegisterFormProps {
-  onSubmit: (values: FormValues) => void;
+  onSubmit?: (values: FormValues) => void;
   isLoading?: boolean;
 }
 
-const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
+const RegisterForm = ({
+  onSubmit,
+  isLoading: propIsLoading = false,
+}: RegisterFormProps) => {
+  const [isLoading, setIsLoading] = useState(propIsLoading);
+  const [error, setError] = useState<string | null>(null);
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,9 +62,49 @@ const RegisterForm = ({ onSubmit, isLoading = false }: RegisterFormProps) => {
     },
   });
 
+  const handleSubmit = async (values: FormValues) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // If custom onSubmit is provided, use it
+      if (onSubmit) {
+        await onSubmit(values);
+        return;
+      }
+
+      // Otherwise use the default auth context signup
+      const { error } = await signUp(
+        values.email,
+        values.password,
+        values.name,
+      );
+
+      if (error) {
+        setError(
+          error.message || "Failed to create account. Please try again.",
+        );
+      } else {
+        // Registration successful, redirect to dashboard or login
+        navigate("/dashboard");
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
         <FormField
           control={form.control}
           name="name"

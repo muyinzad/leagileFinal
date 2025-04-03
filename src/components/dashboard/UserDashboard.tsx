@@ -264,7 +264,7 @@ const UserDashboard = ({
       <div className="container mx-auto py-6 px-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex justify-between items-center mb-6">
-            <TabsList className="grid grid-cols-2 md:grid-cols-6 w-auto">
+            <TabsList className="grid grid-cols-2 md:grid-cols-7 w-auto">
               <TabsTrigger
                 value="dashboard"
                 className="flex items-center gap-2"
@@ -297,6 +297,10 @@ const UserDashboard = ({
               <TabsTrigger value="services" className="flex items-center gap-2">
                 <Database className="h-4 w-4" />
                 <span className="hidden md:inline">Services</span>
+              </TabsTrigger>
+              <TabsTrigger value="profile" className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                <span className="hidden md:inline">Profile</span>
               </TabsTrigger>
             </TabsList>
             <div className="hidden md:flex items-center gap-2">
@@ -1166,6 +1170,36 @@ const UserDashboard = ({
                   Save as Draft
                 </Button>
               </CardFooter>
+            </Card>
+          </TabsContent>
+
+          {/* Profile Tab */}
+          <TabsContent value="profile" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Profile Settings
+                </CardTitle>
+                <CardDescription>
+                  Manage your personal information and account settings
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Profile Edit Form */}
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">
+                    Please visit the profile settings page to edit your profile
+                    information.
+                  </p>
+                  <Button
+                    onClick={() => (window.location.href = "/profile")}
+                    className="mt-2"
+                  >
+                    <Users className="mr-2 h-4 w-4" /> Go to Profile Settings
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
